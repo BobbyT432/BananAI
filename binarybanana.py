@@ -14,8 +14,7 @@ from tensorflow.keras.models import load_model
 
 # our data pipeline
 def process_data():
-    # I don't wanna overkill my laptop so gonna do 8 images at a time
-    data = tf.keras.utils.image_dataset_from_directory('data')
+    data = tf.keras.utils.image_dataset_from_directory('data/binary')
     data = data.map(lambda x,y: (x/255, y)) # we need to scale our numbers down (currently 0 - 255)
     #dataIt = data.as_numpy_iterator()
     
