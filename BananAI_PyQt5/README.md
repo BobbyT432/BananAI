@@ -5,17 +5,18 @@ To Run Without Splash Screen Comment out:
 
 Lines 112-119:
 
-'mySplash = MovieSplashScreen("./banana_logo_splash.gif")
-    mySplash.show()
+    mySplash = MovieSplashScreen("./banana_logo_splash.gif")
+        mySplash.show()
 
-    def showWindow():
-        mySplash.close()
-        window.show()
+        def showWindow():
+            mySplash.close()
+            window.show()
 
-    QtCore.QTimer.singleShot(6000, showWindow)'
+        QtCore.QTimer.singleShot(6000, showWindow)
     
 Then Uncomment line 121:
-'# window.show()'
+
+    # window.show()
 
 
 
