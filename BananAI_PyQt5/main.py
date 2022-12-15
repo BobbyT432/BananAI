@@ -1,4 +1,5 @@
 import sys
+import time
 import tensorflow as tf
 import numpy as np
 import os
@@ -8,6 +9,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QSplashScreen
 from tensorflow.keras.models import Sequential # consider functional for multiple outputs
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
 from tensorflow.keras.metrics import Precision, Recall, BinaryAccuracy
@@ -21,13 +23,40 @@ qtCreatorFile = "mainwindow.ui"
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
 
+class MovieSplashScreen(QSplashScreen):
+
+    def __init__(self, pathToGIF):
+        self.movie = QMovie(pathToGIF)
+        self.movie.jumpToFrame(0)
+        pixmap = QPixmap(self.movie.frameRect().size())
+        pixmap = pixmap.scaled(1800,1080)
+        QSplashScreen.__init__(self, pixmap)
+        self.movie.frameChanged.connect(self.repaint)
+    
+    def showEvent(self, event):
+        self.movie.start()
+    
+    def hideEvent(self, event):
+        self.movie.stop()
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        pixmap = self.movie.currentPixmap()
+        self.setMask(pixmap.mask())
+        painter.drawPixmap(0,0,pixmap)
+
 class mainwindow(QMainWindow):
     fnameImg = None # class level var
-    model = load_model(os.path.join('models','binarybanana.h5'))
+    model = load_model(os.path.join('models','binarybanana0.h5'))
     def __init__(self):
         super(mainwindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        qtRectangle = self.frameGeometry()
+        centerPoint = QDesktopWidget().availableGeometry().center()
+        qtRectangle.moveCenter(centerPoint)
+        self.move(qtRectangle.topLeft())
 
         self.ui.processImg.hide()
         self.ui.picLabel2.hide()
@@ -62,7 +91,7 @@ class mainwindow(QMainWindow):
 
     def browseImage(self):
         self.ui.picLabel2.hide()
-        fname = QFileDialog.getOpenFileName(self, 'Open File', 'c\\', 'Image files (*.jpg *.png)')
+        fname = QFileDialog.getOpenFileName(self, 'Open File', 'c\\', 'Image files (*.jpg *.png *.jfif)')
         self.fnameImg = fname[0]
         imagePath = fname[0]
         pixmap = QPixmap(imagePath)
@@ -80,6 +109,14 @@ class mainwindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    mySplash = MovieSplashScreen("./banana_logo_splash.gif")
+    mySplash.show()
+
+    def showWindow():
+        mySplash.close()
+        window.show()
+
+    QtCore.QTimer.singleShot(6000, showWindow)
     window = mainwindow()
-    window.show()
+    # window.show()
     sys.exit(app.exec_())

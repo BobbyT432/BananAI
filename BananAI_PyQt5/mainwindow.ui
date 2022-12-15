@@ -2,24 +2,27 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1690</width>
-    <height>1090</height>
+    <width>1800</width>
+    <height>1080</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1690</width>
-    <height>1090</height>
+    <width>1600</width>
+    <height>1080</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1690</width>
-    <height>1090</height>
+    <width>1920</width>
+    <height>1080</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -457,8 +460,8 @@ border-image: url(&quot;img/process_button_hover.png&quot;);
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1690</width>
-     <height>26</height>
+     <width>1800</width>
+     <height>22</height>
     </rect>
    </property>
   </widget>
